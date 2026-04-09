@@ -489,7 +489,7 @@ async function saveData(userId) {
     }
 }
 
-function geraToken(uuid){
+function geraToken(uuid, chamarLoad = true){
     if (uuid == undefined){
         
         const modal = document.getElementById("tokenModal");
@@ -506,8 +506,9 @@ function geraToken(uuid){
                 alert("Digite um token!");
                 return;
             }
-
-            loadData(input.value);
+            if (chamarLoad){
+                loadData(input.value);
+            }
             hero_id = input.value
             saveData(hero_id);
 
@@ -1088,6 +1089,9 @@ function updateTokenDisplay() {
         const newToken = generateHeroToken();
         tokenValueSpan.textContent = hero_id;
     }
+}
+document.getElementById("refreshTokenBtn").onclick = () => {
+    geraToken(undefined);
 }
 
 // Mostrar feedback de cópia
