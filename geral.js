@@ -442,7 +442,7 @@ async function loadData(userId) {
         renderAllMissions();
     }
 }
-// localStorage.clear()
+
 async function saveData(userId) {
     const saveData = {
         hero: { 

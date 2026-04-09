@@ -1,6 +1,6 @@
 
 
-function geraToken(uuid, chamarLoad = true){
+function geraToken(uuid, mode=1){
     if (uuid == undefined){
         
         const modal = document.getElementById("tokenModal");
@@ -17,12 +17,16 @@ function geraToken(uuid, chamarLoad = true){
                 alert("Digite um token!");
                 return;
             }
+            localStorage.clear()
+            hero_id = token
             loadData(input.value);
-            
             fecharModal();
+            
             setTimeout(() => {
-                window.location.reload();
+                saveData(hero_id)
             }, 1000);
+            
+            
         });
 
         // Gerar agora
@@ -523,7 +527,7 @@ function updateTokenDisplay() {
     }
 }
 document.getElementById("refreshTokenBtn").onclick = () => {
-    geraToken(undefined);
+    geraToken(undefined, mode=2);
 }
 
 // Mostrar feedback de cópia
