@@ -532,7 +532,7 @@
         As missões exemplo inspiram suas aventuras reais.
     </footer>
 </div>
-<script src="index.js"></script>
+<script src="geral.js"></script>
 <script>
     
 
@@ -642,7 +642,7 @@
 
     // Carregar classe ativa
     function loadActiveClass() {
-        const active = localStorage.getItem("rpg_active_class");
+        const active = classe_atual;
         if (active && CLASSES_DATA.some(c => c.id === active)) return active;
         return "warrior"; // padrão guerreiro
     }
@@ -700,7 +700,28 @@
     let currentProgress = loadProgressData();
     let currentActiveClass = loadActiveClass();
 
-    loadData()
+    async function onPageLoad() {
+        // Sincroniza classe baseada no nível inicial
+        try {
+            var local_hero_id = JSON.parse(localStorage.getItem("rpg_dashboard")).hero.id;
+
+        } catch {
+            var local_hero_id = undefined;
+
+        }
+        await loadData(local_hero_id);
+        renderAllClasses()
+        updateActiveClassBadge()
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+        onPageLoad()
+        // setTimeout(() => {
+            
+        // }, 100);
+        
+    })
+    
     function renderAllClasses() {
         const grid = document.getElementById("classesGrid");
         if (!grid) return;
@@ -712,6 +733,7 @@
             const next_level_xp = 50*levels_por_classe[cls.id]["level"]*1.7 + 50;
             const levelNumber = levels_por_classe[cls.id]["level"];
             const levelName = cls.niveis[Math.floor(levels_por_classe[cls.id]["level"] / 10)];
+            
             const isActive = (classe_atual === cls.id);
 
             // construir card
@@ -782,8 +804,7 @@
                     currentActiveClass = cls.id;
                     saveActiveClass(cls.id);
                     classe_atual = cls.id
-                    window.alert(classe_atual)
-                    saveData(window.currentUserId)
+                    saveData(hero_id)
                     updateActiveClassBadge();
                     renderAllClasses(); // re-render para destacar nova classe ativa
                 });
@@ -840,7 +861,7 @@
 
     function updateActiveClassBadge() {
         const badgeSpan = document.getElementById("activeClassName");
-        const activeClassObj = CLASSES_DATA.find(c => c.id === currentActiveClass);
+        const activeClassObj = CLASSES_DATA.find(c => c.id === classe_atual);
         if (badgeSpan && activeClassObj) {
             badgeSpan.innerText = `${activeClassObj.nome} (${activeClassObj.niveis[getLevelAndTitle(getClassXP(activeClassObj.id, currentProgress), activeClassObj.niveis).levelNumber-1] || activeClassObj.niveis[0]})`;
         } else if(badgeSpan) {
@@ -864,7 +885,7 @@
             }
             saveProgressData(newProgress);
             currentProgress = newProgress;
-            renderAllClasses();
+            // renderAllClasses();
         }
     }
 
@@ -872,7 +893,7 @@
     function syncAndRender() {
         currentProgress = loadProgressData();
         currentActiveClass = loadActiveClass();
-        renderAllClasses();
+        // renderAllClasses();
     }
 
     // Eventos de reset global
