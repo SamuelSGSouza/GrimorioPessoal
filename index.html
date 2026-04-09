@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>⚔️ Grimório do Herói | Missões & Legado</title>
+    <!-- Google Fonts + Font Awesome (ícones) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+<div class="dashboard">
+    <div class="dashboard-header">
+        <h1><i class="fas fa-dragon"></i> Grimório Pessoal</h1>
+        <div class="action-buttons">
+            <a class="btn-icon" href="classes.html"><i class="fas fa-skull-crosswalk"></i> Classes</a>
+        </div>
+    </div>
+
+    <div class="main-grid">
+        <!-- COLUNA ESQUERDA: Stats do Personagem -->
+        <div class="stats-card">
+            <div class="player-name-section">
+                <span class="player-name" id="playerNameDisplay">Kaelen</span>
+                <button class="edit-name-btn" id="editNameBtn" onclick="editaNome()"><i class="fas fa-pen"></i> Editar</button>
+            </div>
+            <div class="class-badge" id="classDisplay">
+                <i class="fas fa-shield-alt" id="txtNivelClasseIcon"></i> <span id="txtNivelClasse">Aprendiz das Sombras</span>
+            </div>
+
+            <div class="xp-container">
+                <div class="xp-info">
+                    <span><i class="fas fa-star-of-life"></i> XP Atual</span>
+                    <span><strong id="currentXP">0</strong> / <span id="nextLevelXP">1000</span></span>
+                </div>
+                <div class="xp-bar-bg">
+                    <div class="xp-fill" id="xpFillBar" style="width: 0%;"></div>
+                </div>
+                <div class="xp-numbers">
+                   <small style="margin-left:10px"> <span><i class="fas fa-star"></i> Nível Atual: <strong id="playerLevel">1</strong></span></small> 
+                   <small> <span><i class="fas fa-arrow-up"></i> Próximo nível: <span id="xpToNext">1000</span> XP</span></small>
+
+                </div>
+            </div>
+
+            <div class="level-info" style="margin-top: 1rem; display: flex; justify-content: space-between;">
+                <span><i class="fas fa-tachometer-alt"></i> Nível da Classe: <strong id="nivelClasse">1</strong></span>
+                <span><i class="fas "></i> Xp da Classe: <strong id="xpClasse">1</strong>/<strong id="nextxpClasse">1</strong></span>
+                <span><i class="fas fa-gem"></i> Classe: <strong id="className">Aprendiz</strong></span>
+            </div>
+
+            <div class="radar-container">
+                <div class="radar-header">
+                    <i class="fas fa-chart-line"></i> Atributos do Herói
+                    <span class="radar-tooltip"><i class="fas fa-info-circle"></i> Evoluem com nível</span>
+                </div>
+                <canvas id="statsRadarChart" width="400" height="400" style="max-width: 100%; height: auto; aspect-ratio: 1 / 1;"></canvas>
+            </div>
+        </div>
+
+        <!-- COLUNA DIREITA: MISSÕES (estrutura secundarizando diárias) -->
+        <div class="missions-wrapper">
+            <!-- SEÇÃO COMPACTA: DIÁRIAS (menor, menos ênfase) -->
+            <div class="daily-quests-compact">
+                <div class="compact-title">
+                    <i class="fas fa-sun" style="color:#e2b66b;"></i> 🌙 Contratos Efêmeros (Diárias)
+                </div>
+                <div id="dailyQuests" class="missions-list compact-list">
+                    <!-- Diárias serão injetadas aqui com visual compacto -->
+                </div>
+            </div>
+
+            <!-- MISSÕES PRINCIPAIS: grid com duas colunas de destaque -->
+            <div class="primary-missions-grid">
+                <div class="mission-card primary">
+                    <div class="mission-title">
+                        <i class="fas fa-scroll"></i> Missões em Aberto
+                    </div>
+                    <div id="openMissionsList" class="missions-list">
+                        <!-- Missões ativas renderizadas -->
+                    </div>
+                </div>
+
+                <div class="mission-card primary">
+                    <div class="mission-title">
+                        <i class="fas fa-feather-alt"></i> Missões para Aceitar
+                    </div>
+                    <div id="availableMissionsList" class="missions-list">
+                        <!-- Missões disponíveis -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer><i class="fas fa-crown"></i> Conclua missões épicas, ganhe XP e ascenda — as diárias são apenas brisas matinais.</footer>
+</div>
+    
+<!-- MODAL -->
+<div id="tokenModal" class="modal-overlay">
+    
+    <div class="modal-box">
+        
+        <div class="modal-header">
+            <h2>🔐 Token de Acesso</h2>
+            <p>
+                Insira seu token para acessar seu progresso em qualquer dispositivo.
+            </p>
+        </div>
+
+        <div class="modal-body">
+            <small class="modal-hint">
+                Não tem um token? Gere um agora e comece sua jornada.
+            </small>
+            <small class="modal-hint">
+                (Esse Token será usado para acessar seu progresso em outros dispositivos, então salve-o em algum lugar)
+            </small>
+
+            <input type="text" id="tokenInput" placeholder="Cole ou gere seu token..." />
+        </div>
+
+        <div class="modal-actions">
+            <button id="btnGerar" class="btn-secondary">Gerar agora</button>
+            <button id="btnConfirmar" class="btn-primary">Confirmar</button>
+        </div>
+
+    </div>
+</div>
+<script>
+
+</script>
+<script src="index.js"></script>
+
+</body>
+</html>

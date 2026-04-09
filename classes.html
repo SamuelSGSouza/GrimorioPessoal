@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>🌙 Seleção de Classe | Grimório do Herói</title>
+    <!-- Google Fonts + Font Awesome (mesmo estilo do dashboard) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: radial-gradient(circle at 10% 20%, #0a0c14, #03050b);
+        font-family: 'Inter', sans-serif;
+        color: #edeef2;
+        padding: 1.5rem;
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    /* sutíl animação de fundo (opcional, muito leve) */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 70% 30%, rgba(200, 170, 100, 0.03) 0%, transparent 60%);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    /* container principal */
+    .class-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+        animation: fadeInUp 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+    }
+
+    /* animação de entrada global */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes subtleGlow {
+        0% { box-shadow: 0 0 0 0 rgba(245, 188, 112, 0.2); }
+        50% { box-shadow: 0 0 0 6px rgba(245, 188, 112, 0.1); }
+        100% { box-shadow: 0 0 0 0 rgba(245, 188, 112, 0); }
+    }
+
+    @keyframes pulseBadge {
+        0% { border-left-color: #f5bc70; box-shadow: 0 0 5px rgba(245,188,112,0.3); }
+        50% { border-left-color: #ffda9e; box-shadow: 0 0 15px rgba(245,188,112,0.7); }
+        100% { border-left-color: #f5bc70; box-shadow: 0 0 5px rgba(245,188,112,0.3); }
+    }
+
+    @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+    }
+
+    /* cabeçalho hero */
+    .hero-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 2.5rem;
+        background: rgba(15, 20, 30, 0.6);
+        backdrop-filter: blur(12px);
+        border-radius: 2rem;
+        padding: 1rem 2rem;
+        border: 1px solid rgba(210, 180, 140, 0.25);
+        box-shadow: 0 15px 35px -12px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        transition: all 0.3s ease;
+    }
+
+    .hero-header:hover {
+        background: rgba(18, 24, 34, 0.7);
+        border-color: rgba(210, 180, 140, 0.4);
+        box-shadow: 0 20px 40px -12px black;
+    }
+
+    .title-section h1 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #f5e7c8, #c9aa5f, #e8c882);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: -0.3px;
+        transition: background-position 0.5s;
+        background-size: 200% auto;
+    }
+
+    .title-section h1:hover {
+        background-position: 100% 0;
+    }
+
+    .title-section p {
+        font-size: 0.85rem;
+        color: #b7c4e0;
+        margin-top: 0.3rem;
+        transition: color 0.2s;
+    }
+
+    .active-class-badge {
+        background: #1e2a3a;
+        border-radius: 2rem;
+        padding: 0.5rem 1.4rem;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        border-left: 4px solid #f5bc70;
+        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+        transition: all 0.25s ease;
+        animation: pulseBadge 2.5s infinite;
+    }
+
+    .active-class-badge i {
+        font-size: 1.4rem;
+        color: #f5bc70;
+        filter: drop-shadow(0 0 2px rgba(245,188,112,0.5));
+        transition: transform 0.2s ease;
+    }
+
+    .active-class-badge:hover i {
+        transform: scale(1.1);
+    }
+
+    .active-class-badge span {
+        font-weight: 600;
+        font-size: 1rem;
+        letter-spacing: 0.3px;
+    }
+
+    .reset-all-btn {
+        background: rgba(120, 40, 40, 0.75);
+        border: none;
+        padding: 0.55rem 1.4rem;
+        border-radius: 2rem;
+        color: #ffd9d9;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        font-size: 0.85rem;
+        backdrop-filter: blur(4px);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .reset-all-btn:hover {
+        background: #9b4545;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px rgba(155, 69, 69, 0.3);
+    }
+
+    .reset-all-btn:active {
+        transform: translateY(1px);
+    }
+
+    /* grid das classes */
+    .classes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 2rem;
+        margin-top: 1rem;
+    }
+
+    /* card de cada classe */
+    .class-card {
+        background: rgba(18, 24, 34, 0.75);
+        backdrop-filter: blur(12px);
+        border-radius: 1.8rem;
+        padding: 1.4rem 1.3rem 1.6rem;
+        transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        border: 1px solid rgba(255, 215, 150, 0.15);
+        box-shadow: 0 12px 28px -10px rgba(0, 0, 0, 0.5);
+        transform: translateY(0);
+    }
+
+    .class-card:hover {
+        transform: translateY(-6px);
+        background: rgba(22, 28, 40, 0.85);
+        border-color: rgba(245, 188, 112, 0.4);
+        box-shadow: 0 25px 40px -12px black;
+    }
+
+    .class-card.active-class {
+        border: 1.5px solid #f5bc70;
+        box-shadow: 0 0 0 1px rgba(245, 188, 112, 0.4), 0 20px 35px -10px black;
+        background: rgba(28, 36, 48, 0.96);
+    }
+
+    .class-card.active-class:hover {
+        box-shadow: 0 0 0 2px rgba(245, 188, 112, 0.5), 0 28px 40px -12px black;
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px dashed rgba(200, 180, 120, 0.3);
+        padding-bottom: 0.7rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .class-name {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .class-name i {
+        font-size: 1.8rem;
+        transition: all 0.2s ease;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
+
+    .class-card:hover .class-name i {
+        transform: scale(1.05) rotate(2deg);
+    }
+
+    /* cores individuais dos ícones com hover glow */
+    .warrior-icon { color: #d45a3a; text-shadow: 0 0 3px rgba(212,90,58,0.3); }
+    .assassin-icon { color: #b77dcc; text-shadow: 0 0 3px rgba(183,125,204,0.3); }
+    .diplomat-icon { color: #e8c468; text-shadow: 0 0 3px rgba(232,196,104,0.3); }
+    .adventurer-icon { color: #6fbf4c; text-shadow: 0 0 3px rgba(111,191,76,0.3); }
+    .sage-icon { color: #5aa9dd; text-shadow: 0 0 3px rgba(90,169,221,0.3); }
+
+    .level-tag {
+        background: #0f1119cc;
+        backdrop-filter: blur(2px);
+        padding: 0.25rem 0.8rem;
+        border-radius: 2rem;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: #ddcca5;
+        transition: all 0.2s;
+    }
+
+    .focus-bonus {
+        background: rgba(0, 0, 0, 0.35);
+        border-radius: 1rem;
+        padding: 0.5rem 0.8rem;
+        font-size: 0.75rem;
+        color: #d1def5;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        transition: all 0.2s;
+    }
+
+    .focus-bonus span {
+        background: #1e2a32cc;
+        padding: 0.2rem 0.7rem;
+        border-radius: 2rem;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+
+    .focus-bonus span:hover {
+        background: #2f3e4a;
+        transform: scale(0.96);
+    }
+
+    .progress-area {
+        margin-top: 0.3rem;
+    }
+
+    .level-title {
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-bottom: 0.3rem;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .xp-bar-bg {
+        background: #0b0e16;
+        border-radius: 1rem;
+        height: 12px;
+        overflow: hidden;
+        margin: 0.5rem 0;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
+    }
+
+    .xp-fill {
+        background: linear-gradient(90deg, #e4b363, #f7d48a, #ffeaaf);
+        width: 0%;
+        height: 100%;
+        border-radius: 1rem;
+        transition: width 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.2);
+        box-shadow: 0 0 6px rgba(244, 208, 120, 0.5);
+        position: relative;
+        background-size: 200% auto;
+        animation: shimmer 2.5s infinite linear;
+    }
+
+    .xp-text {
+        font-size: 0.7rem;
+        display: flex;
+        justify-content: space-between;
+        color: #cbd6ec;
+        font-weight: 500;
+    }
+
+    .missions-preview {
+        background: rgba(0, 0, 0, 0.4);
+        border-radius: 1rem;
+        padding: 0.7rem 0.9rem;
+        font-size: 0.7rem;
+        margin: 0.5rem 0;
+        transition: all 0.2s;
+        border-left: 2px solid #c9aa5f;
+    }
+
+    .missions-preview i {
+        margin-right: 0.4rem;
+        color: #e4bc77;
+        width: 1rem;
+        transition: transform 0.2s;
+    }
+
+    .missions-preview:hover i {
+        transform: translateX(3px);
+    }
+
+    .missions-preview ul {
+        margin-top: 0.4rem;
+        padding-left: 1.4rem;
+        color: #ccd6f0;
+        list-style-type: circle;
+    }
+
+    .missions-preview li {
+        transition: all 0.2s;
+    }
+
+    .missions-preview li:hover {
+        color: #f5e2b0;
+        transform: translateX(2px);
+    }
+
+    .card-actions {
+        display: flex;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+        margin-top: 0.6rem;
+    }
+
+    .btn-class {
+        background: #2c3548;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 2rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: #f0f2f8;
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        backdrop-filter: blur(2px);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .btn-class i {
+        font-size: 0.8rem;
+        transition: transform 0.15s;
+    }
+
+    .btn-class:hover {
+        background: #3e4a62;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-class:hover i {
+        transform: scale(1.1);
+    }
+
+    .btn-class:active {
+        transform: translateY(1px);
+    }
+
+    .btn-select {
+        background: #3f2e1c;
+        border: 1px solid #e4b363;
+        color: #ffdfb3;
+    }
+
+    .btn-select.active-select {
+        background: linear-gradient(135deg, #c9aa5f, #b88d46);
+        color: #141a24;
+        border: none;
+        font-weight: bold;
+        box-shadow: 0 0 8px rgba(201, 170, 95, 0.6);
+    }
+
+    .btn-xp {
+        background: #1f3a3f;
+    }
+
+    .btn-xp:hover {
+        background: #2b5b5f;
+        box-shadow: 0 0 10px rgba(43, 91, 95, 0.5);
+    }
+
+    .btn-reset-class {
+        background: #3a2626;
+        color: #f2b5b5;
+    }
+
+    .btn-reset-class:hover {
+        background: #5e3a3a;
+        color: #ffe0e0;
+    }
+
+    footer {
+        text-align: center;
+        margin-top: 3rem;
+        padding: 1.5rem;
+        font-size: 0.75rem;
+        color: #8f9bb3;
+        border-top: 1px solid rgba(200, 180, 120, 0.2);
+        transition: all 0.2s;
+    }
+
+    footer:hover {
+        color: #b9c8f0;
+    }
+
+    @media (max-width: 700px) {
+        body { padding: 1rem; }
+        .hero-header { flex-direction: column; align-items: stretch; text-align: center; }
+        .class-card { padding: 1.2rem; }
+        .card-actions { justify-content: center; }
+    }
+
+    button {
+        cursor: pointer;
+        font-family: inherit;
+    }
+
+    /* melhoria na barra de rolagem (opcional) */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #0c0f18;
+        border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #c9aa5f;
+        border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #e4bc77;
+    }
+</style>
+    <link rel="stylesheet" href="index.css">
+
+</head>
+<body>
+<div class="class-container">
+    <div class="hero-header">
+        <div class="title-section">
+            <h1><i class="fas fa-chess-queen"></i> Vinculação de Classe</h1>
+            <p>Escolha sua jornada, acompanhe o progresso de cada arquétipo e desperte lendas</p>
+        </div>
+        <div class="active-class-badge" id="activeClassBadge">
+            <i class="fas fa-crown"></i>
+            <span>Classe ativa: <strong id="activeClassName">--</strong></span>
+        </div>
+            <a class="btn-icon" href="index.html"><i class="fas fa-skull-crosswalk"></i> Dashboard</a>
+    </div>
+
+    <div class="classes-grid" id="classesGrid"></div>
+
+    <div id="tokenModal" class="modal-overlay">
+    
+    <div class="modal-box">
+        
+        <div class="modal-header">
+            <h2>🔐 Token de Acesso</h2>
+            <p>
+                Insira seu token para acessar seu progresso em qualquer dispositivo.
+            </p>
+        </div>
+
+        <div class="modal-body">
+            <small class="modal-hint">
+                Não tem um token? Gere um agora e comece sua jornada.
+            </small>
+            <small class="modal-hint">
+                (Esse Token será usado para acessar seu progresso em outros dispositivos, então salve-o em algum lugar)
+            </small>
+
+            <input type="text" id="tokenInput" placeholder="Cole ou gere seu token..." />
+        </div>
+
+        <div class="modal-actions">
+            <button id="btnGerar" class="btn-secondary">Gerar agora</button>
+            <button id="btnConfirmar" class="btn-primary">Confirmar</button>
+        </div>
+
+    </div>
+</div>
+    <footer>
+        <i class="fas fa-scroll"></i> Cada classe tem sua própria experiência (XP). Avance nos níveis, desbloqueie títulos e mude sua classe ativa a qualquer momento.
+        As missões exemplo inspiram suas aventuras reais.
+    </footer>
+</div>
+<script src="index.js"></script>
+<script>
+    
+
+    // ----- DEFINIÇÃO DAS CLASSES (baseado no design) -----
+    const CLASSES_DATA = [
+        {
+            id: "warrior",
+            nome: "Guerreiro",
+            icone: "fas fa-shield-alt",
+            corIcone: "warrior-icon",
+            corDestaque: "#d45a3a",
+            niveis: ["Escudeiro", "Aprendiz", "Soldado", "Guerreiro", "Lendário"],
+            foco: "Força física, resistência, disciplina",
+            bonus: "Resistência mental + Disciplina",
+            missoesExemplo: [
+                "Treinar (academia, calistenia, esportes)",
+                "Melhorar alimentação",
+                "Bater metas físicas (flexões, corrida)"
+            ]
+        },
+        {
+            id: "assassin",
+            nome: "Assassino",
+            icone: "fas fa-dagger",
+            corIcone: "assassin-icon",
+            corDestaque: "#b77dcc",
+            niveis: ["Iniciante", "Ágil", "Corredor", "Assassino", "Sombra"],
+            foco: "Agilidade, reflexo, rapidez",
+            bonus: "Tempo de reação + Adaptabilidade",
+            missoesExemplo: [
+                "Corrida ou sprints",
+                "Treinos de reflexo (jogos rápidos)",
+                "Parkour / coordenação motora",
+                "Decisões rápidas com tempo"
+            ]
+        },
+        {
+            id: "diplomat",
+            nome: "Diplomata",
+            icone: "fas fa-handshake",
+            corIcone: "diplomat-icon",
+            corDestaque: "#e8c468",
+            niveis: ["Tímido", "Comunicador", "Influente", "Diplomata", "Ícone"],
+            foco: "Comunicação, influência social",
+            bonus: "Confiança + Persuasão",
+            missoesExemplo: [
+                "Conversar com pessoas novas",
+                "Melhorar oratória",
+                "Praticar escuta ativa",
+                "Liderar grupos ou projetos"
+            ]
+        },
+        {
+            id: "adventurer",
+            nome: "Aventureiro",
+            icone: "fas fa-compass",
+            corIcone: "adventurer-icon",
+            corDestaque: "#6fbf4c",
+            niveis: ["Curioso", "Explorador", "Ousado", "Aventureiro", "Destino"],
+            foco: "Oportunidades, coragem, tentativa",
+            bonus: "Mais oportunidades + Criatividade",
+            missoesExemplo: [
+                "Tentar algo novo (comida, lugar, atividade)",
+                "Sair da rotina",
+                "Assumir pequenos riscos calculados",
+                "Conhecer novos ambientes"
+            ]
+        },
+        {
+            id: "sage",
+            nome: "Sábio",
+            icone: "fas fa-brain",
+            corIcone: "sage-icon",
+            corDestaque: "#5aa9dd",
+            niveis: ["Curioso", "Estudante", "Aprendiz", "Sábio", "Mestre"],
+            foco: "Aprendizado, raciocínio, conhecimento",
+            bonus: "Pensamento crítico + Foco",
+            missoesExemplo: [
+                "Estudar (qualquer área)",
+                "Ler livros",
+                "Resolver problemas (lógica, programação)",
+                "Produzir conhecimento (resumos, projetos)"
+            ]
+        }
+    ];
+
+    // thresholds de XP por nível (nível 1 ao 5)
+    // nível 1: 0 XP, nível2: 1000, nível3: 2000, nível4: 3000, nível5: 4000+ (max)
+    const XP_PER_LEVEL = 1000;
+    const MAX_LEVEL = 5;
+    const MAX_XP = (MAX_LEVEL - 1) * XP_PER_LEVEL; // 4000
+
+    // Carregar progresso do localStorage
+    function loadProgressData() {
+        const stored = localStorage.getItem("rpg_class_progress");
+        if (stored) {
+            try {
+                return JSON.parse(stored);
+            } catch(e) { return {}; }
+        }
+        return {}; // objeto vazio
+    }
+
+    function saveProgressData(data) {
+        localStorage.setItem("rpg_class_progress", JSON.stringify(data));
+    }
+
+    // Carregar classe ativa
+    function loadActiveClass() {
+        const active = localStorage.getItem("rpg_active_class");
+        if (active && CLASSES_DATA.some(c => c.id === active)) return active;
+        return "warrior"; // padrão guerreiro
+    }
+
+    function saveActiveClass(classId) {
+        localStorage.setItem("rpg_active_class", classId);
+    }
+
+    // Obter XP de uma classe
+    function getClassXP(classId, progressData) {
+        return progressData[classId] !== undefined ? progressData[classId] : 0;
+    }
+
+    // Atualizar XP da classe
+    function setClassXP(classId, xp, progressData) {
+        let newXP = Math.min(MAX_XP, Math.max(0, xp));
+        progressData[classId] = newXP;
+        saveProgressData(progressData);
+        return newXP;
+    }
+
+    // Adicionar XP (com limite)
+    function addXPToClass(classId, amount, progressData) {
+        let current = getClassXP(classId, progressData);
+        let newXP = Math.min(MAX_XP, current + amount);
+        if (newXP !== current) {
+            setClassXP(classId, newXP, progressData);
+        }
+        return newXP;
+    }
+
+    // Dado XP, retorna nível (1-5) e título do nível
+    function getLevelAndTitle(xp, niveisArray) {
+        let levelIndex = Math.floor(xp / XP_PER_LEVEL);
+        if (levelIndex >= MAX_LEVEL) levelIndex = MAX_LEVEL - 1;
+        const nivelAtual = levelIndex + 1; // 1 a 5
+        const titulo = niveisArray[levelIndex] || niveisArray[niveisArray.length-1];
+        const currentLevelXP = levelIndex * XP_PER_LEVEL;
+        const nextLevelXP = (levelIndex + 1) * XP_PER_LEVEL;
+        const xpNeeded = Math.min(nextLevelXP - xp, XP_PER_LEVEL);
+        const progressPercent = (xp - currentLevelXP) / XP_PER_LEVEL;
+        return {
+            levelNumber: nivelAtual,
+            levelTitle: titulo,
+            currentXP: xp,
+            currentLevelBaseXP: currentLevelXP,
+            nextLevelXP: nextLevelXP,
+            xpToNext: Math.max(0, nextLevelXP - xp),
+            progress: Math.min(1, Math.max(0, progressPercent)) * 100,
+            isMaxLevel: nivelAtual === MAX_LEVEL
+        };
+    }
+
+    // Renderizar todos os cards
+    let currentProgress = loadProgressData();
+    let currentActiveClass = loadActiveClass();
+
+    loadData()
+    function renderAllClasses() {
+        const grid = document.getElementById("classesGrid");
+        if (!grid) return;
+
+        grid.innerHTML = "";
+        for (let cls of DADOS_DE_CLASSES) {
+            levels_por_classe[cls.id]
+            const xp = levels_por_classe[cls.id]["xp"];
+            const next_level_xp = 50*levels_por_classe[cls.id]["level"]*1.7 + 50;
+            const levelNumber = levels_por_classe[cls.id]["level"];
+            const levelName = cls.niveis[Math.floor(levels_por_classe[cls.id]["level"] / 10)];
+            const isActive = (classe_atual === cls.id);
+
+            // construir card
+            const card = document.createElement("div");
+            card.className = `class-card ${isActive ? 'active-class' : ''}`;
+            card.dataset.classId = cls.id;
+
+            // Header com nome e level tag
+            const headerDiv = document.createElement("div");
+            headerDiv.className = "card-header";
+            headerDiv.innerHTML = `
+                <div class="class-name">
+                    <i class="${cls.icone} ${cls.corIcone}"></i>
+                    <span>${cls.nome}</span>
+                </div>
+                <div class="level-tag"><i class="fas fa-tag"></i> ${levelName}</div>
+            `;
+
+            // Foco e bônus resumido
+            const focusDiv = document.createElement("div");
+            focusDiv.className = "focus-bonus";
+            focusDiv.innerHTML = `
+                <span><i class="fas fa-bullseye"></i> ${cls.foco}</span>
+                <span><i class="fas fa-gem"></i> ${cls.bonus}</span>
+            `;
+
+            // Área de progresso (nível, barra, xp)
+            const progressDiv = document.createElement("div");
+            progressDiv.className = "progress-area";
+            let is_max_level = levelNumber >= 10
+            let porcentagem = (xp / next_level_xp) * 100;
+            porcentagem = Math.min(porcentagem, 100);
+            const nextLevelName = cls.niveis[Math.floor(levels_por_classe[cls.id]["level"]+10 / 10)];
+            progressDiv.innerHTML = `
+                <div class="level-title">
+                    <span><i class="fas fa-chart-simple"></i> Nível ${levelNumber} · ${levelName}</span>
+                    <span>${!is_max_level ? `→ ${nextLevelName}` : '🏆 Lenda'}</span>
+                </div>
+                <div class="xp-bar-bg">
+                    <div class="xp-fill" style="width: ${porcentagem}%;"></div>
+                </div>
+                <div class="xp-text">
+                    <span><i class="fas fa-star-of-life"></i> ${xp} / ${next_level_xp} XP</span>
+                    <span>${!is_max_level ? `⏫ +${next_level_xp} para próximo nível` : '✨ Domínio total'}</span>
+                </div>
+            `;
+
+            // Missões exemplos
+            // const missionsHtml = `
+            //     <div class="missions-preview">
+            //         <i class="fas fa-scroll"></i> <strong>Missões exemplo</strong>
+            //         <ul>
+            //             ${cls.missoesExemplo.map(m => `<li><i class="fas fa-feather-alt"></i> ${m}</li>`).join('')}
+            //         </ul>
+            //     </div>
+            // `;
+
+            // Botões de ação
+            const actionsDiv = document.createElement("div");
+            actionsDiv.className = "card-actions";
+            
+            const selectBtn = document.createElement("button");
+            selectBtn.className = `btn-class btn-select ${isActive ? 'active-select' : ''}`;
+            selectBtn.innerHTML = isActive ? '<i class="fas fa-check-circle"></i> Classe Ativa' : '<i class="fas fa-crown"></i> Selecionar como Ativa';
+            if (!isActive) {
+                selectBtn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    currentActiveClass = cls.id;
+                    saveActiveClass(cls.id);
+                    classe_atual = cls.id
+                    window.alert(classe_atual)
+                    saveData(window.currentUserId)
+                    updateActiveClassBadge();
+                    renderAllClasses(); // re-render para destacar nova classe ativa
+                });
+            } else {
+                selectBtn.disabled = false;
+                selectBtn.style.opacity = "0.9";
+            }
+
+            const addXp250 = document.createElement("button");
+            addXp250.className = "btn-class btn-xp";
+            addXp250.innerHTML = '<i class="fas fa-plus-circle"></i> +250 XP';
+            addXp250.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const newXP = addXPToClass(cls.id, 250, currentProgress);
+                currentProgress = loadProgressData(); // recarrega depois de alterar
+                renderAllClasses();
+            });
+
+            const addXp500 = document.createElement("button");
+            addXp500.className = "btn-class btn-xp";
+            addXp500.innerHTML = '<i class="fas fa-bolt"></i> +500 XP';
+            addXp500.addEventListener("click", (e) => {
+                e.stopPropagation();
+                addXPToClass(cls.id, 500, currentProgress);
+                currentProgress = loadProgressData();
+                renderAllClasses();
+            });
+
+            const resetClassBtn = document.createElement("button");
+            resetClassBtn.className = "btn-class btn-reset-class";
+            resetClassBtn.innerHTML = '<i class="fas fa-trash-alt"></i> Resetar';
+            resetClassBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if (confirm(`Deseja resetar todo o progresso da classe ${cls.nome}? O XP voltará para 0.`)) {
+                    setClassXP(cls.id, 0, currentProgress);
+                    currentProgress = loadProgressData();
+                    renderAllClasses();
+                }
+            });
+
+            actionsDiv.appendChild(selectBtn);
+
+            card.appendChild(headerDiv);
+            card.appendChild(focusDiv);
+            card.appendChild(progressDiv);
+            // card.appendChild(document.createElement("div")).innerHTML = missionsHtml;
+            card.appendChild(actionsDiv);
+
+            grid.appendChild(card);
+        }
+
+        updateActiveClassBadge();
+    }
+
+    function updateActiveClassBadge() {
+        const badgeSpan = document.getElementById("activeClassName");
+        const activeClassObj = CLASSES_DATA.find(c => c.id === currentActiveClass);
+        if (badgeSpan && activeClassObj) {
+            badgeSpan.innerText = `${activeClassObj.nome} (${activeClassObj.niveis[getLevelAndTitle(getClassXP(activeClassObj.id, currentProgress), activeClassObj.niveis).levelNumber-1] || activeClassObj.niveis[0]})`;
+        } else if(badgeSpan) {
+            badgeSpan.innerText = "Guerreiro";
+        }
+        // atualizar ícone pequeno no badge
+        const badgeIcon = document.querySelector("#activeClassBadge i");
+        if (badgeIcon && activeClassObj) {
+            // troca a classe do ícone para refletir a classe ativa
+            const iconClasses = activeClassObj.icone.split(' ');
+            badgeIcon.className = `${iconClasses[0]} ${iconClasses[1] || 'fas fa-crown'}`;
+        }
+    }
+
+    // Reset global de todos os progressos
+    function globalReset() {
+        if (confirm("⚠️ ATENÇÃO: Isso resetará TODO o progresso de todas as classes (XP zerado). A classe ativa será mantida como está. Deseja continuar?")) {
+            const newProgress = {};
+            for (let cls of CLASSES_DATA) {
+                newProgress[cls.id] = 0;
+            }
+            saveProgressData(newProgress);
+            currentProgress = newProgress;
+            renderAllClasses();
+        }
+    }
+
+    // Sincroniza a variável global com o localStorage caso outro script altere (mas é autônomo)
+    function syncAndRender() {
+        currentProgress = loadProgressData();
+        currentActiveClass = loadActiveClass();
+        renderAllClasses();
+    }
+
+    // Eventos de reset global
+    document.addEventListener("DOMContentLoaded", () => {
+        syncAndRender();
+        const globalResetBtn = document.getElementById("globalResetBtn");
+        if (globalResetBtn) {
+            globalResetBtn.addEventListener("click", globalReset);
+        }
+        // opcional: adicionar atalho para recarregar dados caso haja alteração externa
+        window.addEventListener("storage", (e) => {
+            if (e.key === "rpg_class_progress" || e.key === "rpg_active_class") {
+                syncAndRender();
+            }
+        });
+    });
+</script>
+</body>
+</html>
