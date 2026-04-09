@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>⚔️ Grimório do Herói | Missões & Legado</title>
+    <title>⚔️ Grimório Pessoal | Missões & Legado</title>
     <!-- Google Fonts + Font Awesome (ícones) -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -29,7 +29,25 @@
             <div class="class-badge" id="classDisplay">
                 <i class="fas fa-shield-alt" id="txtNivelClasseIcon"></i> <span id="txtNivelClasse">Aprendiz das Sombras</span>
             </div>
-
+            <div class="token-section">
+            <button class="toggle-token-btn" id="toggleTokenBtn">
+                <i class="fas fa-key"></i> Visualizar Token
+            </button>
+            <div id="tokenDisplayArea" class="token-display hidden">
+                <div class="token-header">
+                    <span><i class="fas fa-fingerprint"></i> Token Pessoal</span>
+                    <div class="token-actions">
+                        
+                        <button id="copyTokenBtn" class="token-action-btn" title="Copiar token">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="token-value-container">
+                    <code class="token-value" id="tokenValue">TKN-xxxxxxxx</code>
+                </div>
+            </div>
+        </div>
             <div class="xp-container">
                 <div class="xp-info">
                     <span><i class="fas fa-star-of-life"></i> XP Atual</span>
@@ -53,11 +71,13 @@
 
             <div class="radar-container">
                 <div class="radar-header">
-                    <i class="fas fa-chart-line"></i> Atributos do Herói
+                    <i class="fas fa-chart-line"></i> Atributos Pessoais
                     <span class="radar-tooltip"><i class="fas fa-info-circle"></i> Evoluem com nível</span>
                 </div>
                 <canvas id="statsRadarChart" width="400" height="400" style="max-width: 100%; height: auto; aspect-ratio: 1 / 1;"></canvas>
             </div>
+        
+        
         </div>
 
         <!-- COLUNA DIREITA: MISSÕES (estrutura secundarizando diárias) -->

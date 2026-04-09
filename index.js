@@ -1042,3 +1042,138 @@ function editaNome(){
     hero_name = resposta
     saveData(hero_id)
 }
+
+
+const toggleBtn = document.getElementById('toggleTokenBtn');
+const tokenDisplayArea = document.getElementById('tokenDisplayArea');
+const tokenValueSpan = document.getElementById('tokenValue');
+const refreshBtn = document.getElementById('refreshTokenBtn');
+const copyBtn = document.getElementById('copyTokenBtn');
+
+// Função para gerar token baseado nos atributos atuais do herói
+function generateHeroToken() {
+    // Obter valores atuais dos elementos
+    const playerName = document.getElementById('playerNameDisplay')?.innerText || 'Kaelen';
+    const className = document.getElementById('className')?.innerText || 'Aprendiz';
+    const playerLevel = document.getElementById('playerLevel')?.innerText || '1';
+    const classLevel = document.getElementById('nivelClasse')?.innerText || '1';
+    const currentXP = document.getElementById('currentXP')?.innerText || '0';
+    
+    // Criar string base com os atributos
+    const rawData = `${playerName}|${className}|LV${playerLevel}|CL${classLevel}|XP${currentXP}`;
+    
+    // Gerar hash simples (Base64 seguro para UTF-8)
+    let encoded;
+    try {
+        // Suporte a caracteres especiais (acentos, etc)
+        const utf8Bytes = unescape(encodeURIComponent(rawData));
+        encoded = btoa(utf8Bytes);
+    } catch(e) {
+        encoded = btoa(rawData);
+    }
+    
+    // Formatar token (prefixo + hash truncado)
+    const tokenHash = encoded.slice(0, 32).replace(/[+/=]/g, char => {
+        if (char === '+') return 'A';
+        if (char === '/') return 'B';
+        return 'C';
+    });
+    
+    return `H3R0-${tokenHash}`;
+}
+
+// Atualizar o token exibido
+function updateTokenDisplay() {
+    if (tokenValueSpan) {
+        const newToken = generateHeroToken();
+        tokenValueSpan.textContent = hero_id;
+    }
+}
+
+// Mostrar feedback de cópia
+function showCopyFeedback() {
+    const feedback = document.createElement('div');
+    feedback.className = 'copy-feedback';
+    feedback.innerHTML = '<i class="fas fa-check-circle"></i> Token copiado!';
+    document.body.appendChild(feedback);
+    setTimeout(() => {
+        feedback.remove();
+    }, 2000);
+}
+
+// Copiar token para área de transferência
+async function copyTokenToClipboard() {
+    if (!tokenValueSpan) return;
+    const token = tokenValueSpan.textContent;
+    try {
+        await navigator.clipboard.writeText(token);
+        showCopyFeedback();
+    } catch (err) {
+        // Fallback para navegadores antigos
+        const textarea = document.createElement('textarea');
+        textarea.value = token;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showCopyFeedback();
+    }
+}
+
+// Alternar visibilidade da área de token
+function toggleTokenVisibility() {
+    if (!tokenDisplayArea || !toggleBtn) return;
+    
+    const isHidden = tokenDisplayArea.classList.contains('hidden');
+    
+    if (isHidden) {
+        // Ao mostrar, atualiza o token com os dados mais recentes
+        updateTokenDisplay();
+        tokenDisplayArea.classList.remove('hidden');
+        toggleBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Ocultar Token';
+    } else {
+        tokenDisplayArea.classList.add('hidden');
+        toggleBtn.innerHTML = '<i class="fas fa-key"></i> Visualizar Token';
+    }
+}
+
+// Atualizar token se a área estiver visível (útil após mudanças nos atributos)
+window.refreshHeroTokenIfVisible = function() {
+    if (tokenDisplayArea && !tokenDisplayArea.classList.contains('hidden')) {
+        updateTokenDisplay();
+    }
+};
+
+// Event Listeners
+if (toggleBtn) toggleBtn.addEventListener('click', toggleTokenVisibility);
+if (refreshBtn) refreshBtn.addEventListener('click', updateTokenDisplay);
+if (copyBtn) copyBtn.addEventListener('click', copyTokenToClipboard);
+
+// Opcional: Atualizar token automaticamente quando o nome for editado
+const editNameBtn = document.getElementById('editNameBtn');
+if (editNameBtn) {
+    editNameBtn.addEventListener('click', function() {
+        // Pequeno delay para o nome ser atualizado no DOM
+        setTimeout(() => {
+            if (tokenDisplayArea && !tokenDisplayArea.classList.contains('hidden')) {
+                updateTokenDisplay();
+            }
+        }, 100);
+    });
+}
+
+// Monitorar mudanças no nível/XP via MutationObserver (opcional, mas robusto)
+const observerTargets = ['playerLevel', 'nivelClasse', 'currentXP', 'className'];
+const observer = new MutationObserver(function() {
+    window.refreshHeroTokenIfVisible();
+});
+
+observerTargets.forEach(targetId => {
+    const element = document.getElementById(targetId);
+    if (element) {
+        observer.observe(element, { childList: true, characterData: true, subtree: true });
+    }
+});
+
+// Inicializar token (já gera o primeiro valor)
+updateTokenDisplay();

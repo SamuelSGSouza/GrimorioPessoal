@@ -814,3 +814,134 @@ footer:hover {
 #tokenModal{
     display: none;
 }
+
+
+/* Área do Token */
+.token-section {
+    margin-top: 1.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.toggle-token-btn {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    color: #ffd700;
+    padding: 0.6rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.toggle-token-btn:hover {
+    background: rgba(255, 215, 0, 0.15);
+    border-color: #ffd700;
+    transform: translateY(-1px);
+}
+
+.token-display {
+    margin-top: 1rem;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    padding: 1rem;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.token-display.hidden {
+    display: none;
+}
+
+.token-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    color: #ffd700;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.token-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.token-action-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #ccc;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.8rem;
+}
+
+.token-action-btn:hover {
+    background: rgba(255, 215, 0, 0.3);
+    color: #ffd700;
+}
+
+.token-value-container {
+    background: #0a0c12;
+    border-radius: 8px;
+    padding: 0.8rem;
+    margin-bottom: 0.8rem;
+    border: 1px solid #2a2e3f;
+    overflow-x: auto;
+}
+
+.token-value {
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: #7ee0ff;
+    word-break: break-all;
+    user-select: all;
+}
+
+.token-note {
+    color: #888;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Feedback de cópia */
+.copy-feedback {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #2ecc71;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    z-index: 1000;
+    animation: fadeOut 2s ease forwards;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; transform: translateY(0); }
+    70% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-20px); visibility: hidden; }
+}
