@@ -387,7 +387,7 @@ async function loadData(userId) {
 
         try {
             const res = await fetch(`${API_URL}?hero_id=${userId}`);
-            
+            console.log(res)
             if (res.ok) {
                 data = await res.json();
             } else {
@@ -406,6 +406,7 @@ async function loadData(userId) {
                 data = JSON.parse(local);
             } catch(e) {}
         }
+        console.log("Pegando data local como fallback")
     }
 
     if (data) {
@@ -1022,10 +1023,18 @@ function bindRadarEvents() {
 }
 
 // Inicialização após carregamento completo
-window.addEventListener("DOMContentLoaded", () => {
+async function onPageLoad() {
     // Sincroniza classe baseada no nível inicial
-    
-    loadData()
+    try {
+        var local_hero_id = JSON.parse(localStorage.getItem("rpg_dashboard")).hero.id;
+
+    } catch {
+        var local_hero_id = undefined;
+
+    }
+    await loadData(local_hero_id)
+    window.alert(local_hero_id)
+    window.alert(hero_id)
     geraToken(hero_id)
     updateXP()
     // updateUIClassByLevel(hero_level);
@@ -1033,7 +1042,11 @@ window.addEventListener("DOMContentLoaded", () => {
     bindRadarEvents();
     renderAllMissions();
    
-});
+};
+
+window.addEventListener("DOMContentLoaded", () => {
+    onPageLoad()
+})
 
 
 function editaNome(){
@@ -1086,7 +1099,6 @@ function generateHeroToken() {
 // Atualizar o token exibido
 function updateTokenDisplay() {
     if (tokenValueSpan) {
-        const newToken = generateHeroToken();
         tokenValueSpan.textContent = hero_id;
     }
 }
