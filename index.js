@@ -470,6 +470,7 @@ async function saveData(userId) {
     if (userId) {
         console.log("Salvando Externamente");
 
+        
         try {
             const res = await fetch(API_URL, {
                 method: "POST",
