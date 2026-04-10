@@ -53,6 +53,17 @@ function geraToken(uuid, mode=1){
         }
 
         
+    } else{
+        setTimeout(() => {
+            if (!fez_tutorial){
+                createTutorial([
+                    { id: 'vincClasseArea',      msg: 'Essa é a tela de classes, aqui você pode verificar sua evolução em cada classe e trocar para outras classes.' },
+                    { id: 'btnDashboard',      msg: 'Clique aqui para voltar à tela Inicial' },
+                    { id: 'classesGrid',      msg: 'Visualize seus avanços em cada classe e alterne entre elas livremente.' },
+                    { id: 'classesGrid',      msg: 'Isso conclui o tutorial. \n\n Se você tiver dúvidas, sugestões, comentários, reclamações, imposições ou qualquer "ões" é só dar o papo' },
+                ]);
+            }
+    }, 1000);
     }
 };
 
