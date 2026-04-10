@@ -897,7 +897,7 @@
     window.addEventListener("DOMContentLoaded", () => {
         onPageLoad()
         setTimeout(() => {
-            if (!fez_tutorial && hero_id){
+            if (!fez_tutorial && hero_id != undefined){
                 createTutorial([
                     { id: 'vincClasseArea',      msg: 'Essa é a tela de classes, aqui você pode verificar sua evolução em cada classe e trocar para outras classes.' },
                     { id: 'btnDashboard',      msg: 'Clique aqui para voltar à tela Inicial' },
