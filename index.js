@@ -619,7 +619,7 @@ updateTokenDisplay();
 window.addEventListener("DOMContentLoaded", () => {
     onPageLoad()
     setTimeout(() => {
-        if (!fez_tutorial){
+        if (!fez_tutorial && !hero_id){
             createTutorial([
                 { id: 'pageTitle',      msg: 'Bem vindo ao sistema de evolução Grimório Pessoal!\n\n O sistema foi feito por uma única pessoa então pode apresentar erros ou falhas.\n\n Caso aconteça, entre em contato comigo ;-; ' },
                 { id: 'pagesButtons',      msg: 'Aqui você pode acessar a página de classes disponíveis e alternar entre elas quando quiser.' },
