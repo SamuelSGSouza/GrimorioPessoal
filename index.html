@@ -13,9 +13,9 @@
 <body>
 <div class="dashboard">
     <div class="dashboard-header">
-        <h1><i class="fas fa-dragon"></i> Grimório Pessoal</h1>
-        <div class="action-buttons">
-            <a class="btn-icon" href="classes.html"><i class="fas fa-skull-crosswalk"></i> Classes</a>
+        <h1 id="pageTitle"><i class="fas fa-dragon"></i> Grimório Pessoal</h1>
+        <div class="action-buttons" >
+            <a class="btn-icon" id="pagesButtons" href="classes.html"><i class="fas fa-skull-crosswalk"></i> Classes</a>
         </div>
     </div>
 
@@ -50,8 +50,8 @@
                 </div>
             </div>
         </div>
-            <div class="xp-container">
-                <div class="xp-info">
+            <div class="xp-container" id="xpInfo">
+                <div class="xp-info" >
                     <span><i class="fas fa-star-of-life"></i> XP Atual</span>
                     <span><strong id="currentXP">0</strong> / <span id="nextLevelXP">1000</span></span>
                 </div>
@@ -65,13 +65,13 @@
                 </div>
             </div>
 
-            <div class="level-info" style="margin-top: 1rem; display: flex; justify-content: space-between;">
+            <div class="level-info" id="infosClasse" style="margin-top: 1rem; display: flex; justify-content: space-between;">
                 <span><i class="fas fa-tachometer-alt"></i> Nível da Classe: <strong id="nivelClasse">1</strong></span>
                 <span><i class="fas "></i> Xp da Classe: <strong id="xpClasse">1</strong>/<strong id="nextxpClasse">1</strong></span>
                 <span><i class="fas fa-gem"></i> Classe: <strong id="className">Aprendiz</strong></span>
             </div>
 
-            <div class="radar-container">
+            <div class="radar-container" id="radarArea">
                 <div class="radar-header">
                     <i class="fas fa-chart-line"></i> Atributos Pessoais
                     <span class="radar-tooltip"><i class="fas fa-info-circle"></i> Evoluem com nível</span>
@@ -83,7 +83,7 @@
         </div>
 
         <!-- COLUNA DIREITA: MISSÕES (estrutura secundarizando diárias) -->
-        <div class="missions-wrapper">
+        <div class="missions-wrapper" id="dailyQuestsArea">
             <!-- SEÇÃO COMPACTA: DIÁRIAS (menor, menos ênfase) -->
             <div class="daily-quests-compact">
                 <div class="compact-title">

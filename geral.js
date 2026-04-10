@@ -375,7 +375,7 @@ var levels_por_classe ={
 var nivel_classe = ""
 var dados_classe_ativa = DADOS_DE_CLASSES.find(item => item.id === classe_atual);
 var hoje = new Date().toLocaleDateString('pt-BR');
-
+var fez_tutorial = false
 
 
 async function loadData(userId) {
@@ -424,6 +424,7 @@ async function loadData(userId) {
         nivel_classe = data.hero.nivel_classe;
         classe_atual = data.classe_atual;
         levels_por_classe = data.levels_por_classe;
+        fez_tutorial = data.fez_tutorial;
 
         dados_classe_ativa = DADOS_DE_CLASSES.find(item => item.id === classe_atual);
 
@@ -461,7 +462,8 @@ async function saveData(userId) {
         },
         date: hoje,
         levels_por_classe: levels_por_classe,
-        classe_atual: classe_atual
+        classe_atual: classe_atual,
+        fez_tutorial: fez_tutorial
     };
 
     // 💾 salva local primeiro (sempre)
@@ -580,4 +582,205 @@ function missoes_disponiveis(){
         missao => !missoes_aceitas.some(a => a.id === missao.id)
     );
     return missoes_filtradas
+}
+
+function createTutorial(steps) {
+  let current = 0;
+
+  // 3️⃣ Adicionar o listener de scroll — logo após document.body.append(...)
+    const onScroll = () => {
+        const el = document.getElementById(steps[current].id);
+        if (el) posicionar(el);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+  const overlay = document.createElement('div');
+  overlay.id = 'tut-overlay';
+  overlay.addEventListener('click', () => {
+    cutout.style.outline = '2px solid #e0bf6a';
+    cutout.style.transition = 'outline 0s';
+    setTimeout(() => {
+        cutout.style.outline = '2px solid #c9a84c';
+        cutout.style.transition = 'outline 0.4s';
+    }, 150);
+    });
+
+  const cutout = document.createElement('div');
+  cutout.id = 'tut-cutout';
+
+  const box = document.createElement('div');
+  box.id = 'tut-box';
+  box.innerHTML = `
+    <div id="tut-step"></div>
+    <div id="tut-pips"></div>
+    <div id="tut-msg"></div>
+    <div id="tut-footer">
+      <button id="tut-skip">Pular tutorial</button>
+      <button id="tut-next">Continuar →</button>
+    </div>
+  `;
+
+  document.body.append(overlay, cutout, box);
+
+  document.getElementById('tut-skip').onclick = end;
+  document.getElementById('tut-next').onclick = next;
+
+  const style = document.createElement('style');
+  style.textContent = `
+    #tut-overlay {
+      position: fixed; inset: 0;
+      background: transparent;
+      z-index: 9998;
+      pointer-events: all;
+    }
+    #tut-cutout {
+      position: fixed;
+      border-radius: 6px;
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75);
+      outline: 2px solid #c9a84c;
+      z-index: 9999;
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+    #tut-box {
+      position: fixed;
+      z-index: 10000;
+      background: #141414;
+      border: 1px solid #c9a84c;
+      border-radius: 12px;
+      padding: 18px 20px;
+      width: 280px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(201, 168, 76, 0.15);
+      transition: all 0.3s ease;
+      font-family: sans-serif;
+    }
+    #tut-step {
+      font-size: 12px;
+      color: #c9a84c;
+      margin-bottom: 6px;
+      letter-spacing: 0.05em;
+      font-weight: 500;
+    }
+    #tut-pips {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 12px;
+    }
+    .tut-pip {
+      height: 3px;
+      flex: 1;
+      border-radius: 2px;
+      background: #2a2a2a;
+      transition: background 0.3s;
+    }
+    .tut-pip.active { background: #c9a84c; }
+    #tut-msg {
+      font-size: 14px;
+      color: #e8e0cc;
+      line-height: 1.55;
+      margin-bottom: 16px;
+      white-space: pre-line;
+    }
+    #tut-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #tut-skip {
+      background: none;
+      border: none;
+      font-size: 12px;
+      color: #666;
+      cursor: pointer;
+    }
+    #tut-skip:hover { color: #999; }
+    #tut-next {
+      background: #c9a84c;
+      color: #0e0e0e;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.02em;
+      transition: background 0.2s;
+    }
+    #tut-next:hover { background: #e0bf6a; }
+  `;
+  document.head.appendChild(style);
+
+  show(current);
+
+  function posicionar(el) {
+    const pad = 8;
+    const rect = el.getBoundingClientRect();
+
+    cutout.style.top    = (rect.top - pad) + 'px';
+    cutout.style.left   = (rect.left - pad) + 'px';
+    cutout.style.width  = (rect.width + pad * 2) + 'px';
+    cutout.style.height = (rect.height + pad * 2) + 'px';
+
+    let boxTop = rect.bottom + pad + 12;
+    if (boxTop + 180 > window.innerHeight) boxTop = rect.top - pad - 180;
+
+    let boxLeft = rect.left;
+    if (boxLeft + 290 > window.innerWidth) boxLeft = window.innerWidth - 298;
+    if (boxLeft < 8) boxLeft = 8;
+
+    box.style.top  = boxTop + 'px';
+    box.style.left = boxLeft + 'px';
+    }
+
+    // 2️⃣ show atualizado — scrolla até o elemento e chama posicionar depois
+    function show(i) {
+    const step = steps[i];
+    const el = document.getElementById(step.id);
+    if (!el) return;
+
+    document.getElementById('tut-step').textContent = `${i + 1} de ${steps.length}`;
+    document.getElementById('tut-msg').innerHTML = step.msg;
+    document.getElementById('tut-next').textContent =
+        i < steps.length - 1 ? 'Continuar →' : 'Concluir';
+
+    var url_atual = window.location.href;
+    var textCont = document.getElementById('tut-next').textContent
+    if (!url_atual.includes("classes") && textCont.includes("Concluir")){
+        window.location.href = "classes.html"
+    } 
+    if (url_atual.includes("classes") && textCont.includes("Concluir")){
+        fez_tutorial = true
+        saveData(hero_id);
+        console.log("Fez tutorial: "+ fez_tutorial)
+    } 
+    
+    
+    const pips = document.getElementById('tut-pips');
+    pips.innerHTML = '';
+    steps.forEach((_, k) => {
+        const pip = document.createElement('div');
+        pip.className = 'tut-pip' + (k <= i ? ' active' : '');
+        pips.appendChild(pip);
+    });
+
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => posicionar(el), 350);
+    }
+
+  function next() {
+    if (current < steps.length - 1) {
+      current++;
+      show(current);
+    } else {
+      end();
+    }
+  }
+
+  function end() {
+    window.removeEventListener('scroll', onScroll);
+    overlay.remove();
+    cutout.remove();
+    box.remove();
+    style.remove();
+    }
 }

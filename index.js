@@ -468,9 +468,6 @@ async function onPageLoad() {
    
 };
 
-window.addEventListener("DOMContentLoaded", () => {
-    onPageLoad()
-})
 
 
 function editaNome(){
@@ -617,3 +614,27 @@ observerTargets.forEach(targetId => {
 
 // Inicializar token (já gera o primeiro valor)
 updateTokenDisplay();
+
+
+window.addEventListener("DOMContentLoaded", () => {
+    onPageLoad()
+    setTimeout(() => {
+        if (!fez_tutorial){
+            createTutorial([
+                { id: 'pageTitle',      msg: 'Bem vindo ao sistema de evolução Grimório Pessoal!\n\n O sistema foi feito por uma única pessoa então pode apresentar erros ou falhas.\n\n Caso aconteça, entre em contato comigo ;-; ' },
+                { id: 'pagesButtons',      msg: 'Aqui você pode acessar a página de classes disponíveis e alternar entre elas quando quiser.' },
+                { id: 'editNameBtn',      msg: 'Clique aqui para alterar seu nome de usuário.' },
+                { id: 'classDisplay',      msg: 'Esse é seu título na classe. \n\n Conforme sobe de nível, você ganhará novos títulos.' },
+                { id: 'toggleTokenBtn',      msg: 'Nesse botão você pode visualizar, colar ou trocar seu token único. \n\n *ATENÇÃO*:Cuidado pois todo o seu progresso depende deste token!' },
+                { id: 'xpInfo',      msg: 'Esta é sua área de xp\n\nEla mostra seu xp atual, nível e xp necessário para alcançar o próximo nível. \n\n Acho que eu não preciso explicar o que é XP né?\n¯_(ツ)_/¯' },
+                { id: 'infosClasse',      msg: 'Por aqui você pode conferir sua classe ativa, nível na classe e xp necessário para subir de nível na própria classe.' },
+                { id: 'radarArea',      msg: 'Seu gráfico de atributos mostra suas aptidões.\n\nVocê ganha 2 pontos sempre que sobe de nível. \n\nSubir de nível de classe concede 2 pontos em um atributo específico da classe.' },
+                { id: 'dailyQuests',      msg: 'Missões diárias são pequenas atividades que você deve realizar ao longo do dia ou horários específicos. \n\n Elas renovam diariamente e podem mudar de um dia para outro.' },
+                { id: 'openMissionsList',      msg: 'Suas missões aceitas ficarão aqui até serem completadas. \n\n Não há limite de tempo nem de quantas missões você pode aceitar então fique à vontade e use o bom senso.' },
+                { id: 'availableMissionsList',      msg: 'As missões disponíveis dependem da sua classe e do seu nível na classe. Conforme você sobe de nível na classe, as missões vão mudando e ficando mais difíceis.' },
+                { id: 'availableMissionsList',      msg: 'As missões disponíveis dependem da sua classe e do seu nível na classe. Conforme você sobe de nível na classe, as missões vão mudando e ficando mais difíceis.' },
+            ]);
+        }
+    }, 1000);
+    
+})

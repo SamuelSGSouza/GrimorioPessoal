@@ -474,7 +474,7 @@
 <body>
 <div class="class-container">
     <div class="hero-header">
-        <div class="title-section">
+        <div class="title-section" id="vincClasseArea">
             <h1><i class="fas fa-chess-queen"></i> Vinculação de Classe</h1>
             <p>Escolha sua jornada, acompanhe o progresso de cada arquétipo e desperte lendas</p>
         </div>
@@ -482,7 +482,7 @@
             <i class="fas fa-crown"></i>
             <span>Classe ativa: <strong id="activeClassName">--</strong></span>
         </div>
-            <a class="btn-icon" href="index.html"><i class="fas fa-skull-crosswalk"></i> Dashboard</a>
+            <a class="btn-icon" id="btnDashboard" href="index.html"><i class="fas fa-skull-crosswalk"></i> Dashboard</a>
     </div>
 
     <div class="classes-grid" id="classesGrid"></div>
@@ -703,13 +703,7 @@
         updateActiveClassBadge()
     }
 
-    window.addEventListener("DOMContentLoaded", () => {
-        onPageLoad()
-        // setTimeout(() => {
-            
-        // }, 100);
-        
-    })
+    
     
     function renderAllClasses() {
         const grid = document.getElementById("classesGrid");
@@ -899,6 +893,21 @@
             }
         });
     });
+
+    window.addEventListener("DOMContentLoaded", () => {
+        onPageLoad()
+        setTimeout(() => {
+            if (!fez_tutorial){
+                createTutorial([
+                    { id: 'vincClasseArea',      msg: 'Essa é a tela de classes, aqui você pode verificar sua evolução em cada classe e trocar para outras classes.' },
+                    { id: 'btnDashboard',      msg: 'Clique aqui para voltar à tela Inicial' },
+                    { id: 'classesGrid',      msg: 'Visualize seus avanços em cada classe e alterne entre elas livremente.' },
+                    { id: 'classesGrid',      msg: 'Isso conclui o tutorial. \n\n Se você tiver dúvidas, sugestões, comentários, reclamações, imposições ou qualquer "ões" é só dar o papo' },
+                ]);
+            }
+    }, 1000);
+        
+    })
 </script>
 </body>
 </html>
