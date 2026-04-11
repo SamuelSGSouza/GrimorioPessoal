@@ -23,6 +23,7 @@ function geraToken(uuid, mode=1){
             
             setTimeout(() => {
                 saveData(hero_id)
+                window.location.href = "index.html"
             }, 1000);
             
             
