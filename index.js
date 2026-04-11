@@ -17,7 +17,6 @@ function geraToken(uuid, mode=1){
                 alert("Digite um token!");
                 return;
             }
-            localStorage.clear()
             hero_id = token
             loadData(input.value);
             fecharModal();
