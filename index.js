@@ -105,6 +105,7 @@ function aceitar_missao(event){
     const id = event.currentTarget.dataset.id;
     const missao = missoes_disponiveis().find(m => m.id === id);
     missoes_aceitas.push(missao)
+    console.log("missao_aceita: ", missao)
     saveData(hero_id);
     renderAllMissions();
 }
@@ -156,9 +157,6 @@ function updateXP(xp_adicional){
     var iconElement = document.getElementById("txtNivelClasseIcon");
     iconElement.className = icon;
 
-    let classNamearea = document.getElementById("className")
-    classNamearea.textContent = classe_atual
-
     let playerLevelArea = document.getElementById("playerLevel")
     playerLevelArea.textContent = hero_level
 
@@ -175,14 +173,8 @@ function updateXP(xp_adicional){
         levels_por_classe[classe_atual]["level"] = levels_por_classe[classe_atual]["level"] + 1
     }
     nextXpClasse = 50*levels_por_classe[classe_atual]["level"]*1.7 + 50;
-    let nivelClasseArea = document.getElementById("nivelClasse")
-    nivelClasseArea.textContent = levels_por_classe[classe_atual]["level"]
 
-    let xpClasseArea = document.getElementById("xpClasse")
-    xpClasseArea.textContent = levels_por_classe[classe_atual]["xp"]
 
-    let nextxpClasseArea = document.getElementById("nextxpClasse")
-    nextxpClasseArea.textContent = nextXpClasse
 
 
     
@@ -627,11 +619,10 @@ window.addEventListener("DOMContentLoaded", () => {
                 { id: 'classDisplay',      msg: 'Esse é seu título na classe. \n\n Conforme sobe de nível, você ganhará novos títulos.' },
                 { id: 'toggleTokenBtn',      msg: 'Nesse botão você pode visualizar, colar ou trocar seu token único. \n\n *ATENÇÃO*:Cuidado pois todo o seu progresso depende deste token!' },
                 { id: 'xpInfo',      msg: 'Esta é sua área de xp\n\nEla mostra seu xp atual, nível e xp necessário para alcançar o próximo nível. \n\n Acho que eu não preciso explicar o que é XP né?\n¯_(ツ)_/¯' },
-                { id: 'infosClasse',      msg: 'Por aqui você pode conferir sua classe ativa, nível na classe e xp necessário para subir de nível na própria classe.' },
                 { id: 'radarArea',      msg: 'Seu gráfico de atributos mostra suas aptidões.\n\nVocê ganha 2 pontos sempre que sobe de nível. \n\nSubir de nível de classe concede 2 pontos em um atributo específico da classe.' },
                 { id: 'dailyQuests',      msg: 'Missões diárias são pequenas atividades que você deve realizar ao longo do dia ou horários específicos. \n\n Elas renovam diariamente e podem mudar de um dia para outro.' },
                 { id: 'openMissionsList',      msg: 'Suas missões aceitas ficarão aqui até serem completadas. \n\n Não há limite de tempo nem de quantas missões você pode aceitar então fique à vontade e use o bom senso.' },
-                { id: 'availableMissionsList',      msg: 'As missões disponíveis dependem da sua classe e do seu nível na classe. Conforme você sobe de nível na classe, as missões vão mudando e ficando mais difíceis.' },
+                { id: 'availableMissionsList',      msg: 'As missões disponíveis dependem do seu nível na classe.\n\n A cor na parte esquerda do título indica a classe da qual a missão faz parte. \n\n Conforme você sobe de nível na classe, as missões vão mudando e ficando mais difíceis.' },
                 { id: 'availableMissionsList',      msg: 'As missões disponíveis dependem da sua classe e do seu nível na classe. Conforme você sobe de nível na classe, as missões vão mudando e ficando mais difíceis.' },
             ]);
         }

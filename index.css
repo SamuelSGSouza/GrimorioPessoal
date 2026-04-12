@@ -12,6 +12,26 @@
     --card-bg: rgba(18, 22, 30, 0.75);
     --transition-default: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
     --shadow-elevation: 0 20px 35px -12px rgba(0,0,0,0.6);
+
+    --warrior-primary: #d94a4a;
+    --warrior-glow: rgba(217, 74, 74, 0.45);
+    --warrior-soft: rgba(217, 74, 74, 0.15);
+
+    --assassin-primary: #7a5cff;
+    --assassin-glow: rgba(122, 92, 255, 0.45);
+    --assassin-soft: rgba(122, 92, 255, 0.15);
+
+    --sage-primary: #4da3ff;
+    --sage-glow: rgba(77, 163, 255, 0.45);
+    --sage-soft: rgba(77, 163, 255, 0.15);
+
+    --diplomat-primary: #f0a63a;
+    --diplomat-glow: rgba(240, 166, 58, 0.5);
+    --diplomat-soft: rgba(240, 166, 58, 0.15);
+
+    --adventurer-primary: #3ddc97;
+    --adventurer-glow: rgba(61, 220, 151, 0.45);
+    --adventurer-soft: rgba(61, 220, 151, 0.15);
 }
 
 body {
@@ -239,6 +259,22 @@ body {
     background: linear-gradient(90deg, rgba(255,255,255,0.2), transparent);
     animation: shimmer 2s infinite;
 }
+.xp-fill-warrior{
+    background: linear-gradient(90deg, var(--warrior-glow), var(--warrior-primary))!important;
+}
+.xp-fill-assassin{
+    background: linear-gradient(90deg, var(--assassin-glow), var(--assassin-primary))!important;
+}
+.xp-fill-diplomat{
+    background: linear-gradient(90deg, var(--diplomat-glow), var(--diplomat-primary))!important;
+}
+.xp-fill-sage{
+    background: linear-gradient(90deg, var(--sage-glow), var(--sage-primary))!important;
+}
+.xp-fill-adventurer{
+    background: linear-gradient(90deg, var(--adventurer-glow), var(--adventurer-primary))!important;
+}
+
 @keyframes shimmer {
     0% { transform: translateX(-100%); }
     100% { transform: translateX(100%); }
@@ -409,6 +445,22 @@ canvas {
     padding-left: 12px;
     transition: border-left-width 0.2s;
 }
+.mission-warrior{
+    border-left: 4px solid var(--warrior-primary)!important;
+}
+.mission-assassin{
+    border-left: 4px solid var(--assassin-primary)!important;
+}
+.mission-adventurer{
+    border-left: 4px solid var(--adventurer-primary)!important;
+}
+.mission-sage{
+    border-left: 4px solid var(--sage-primary)!important;
+}
+.mission-diplomat{
+    border-left: 4px solid var(--diplomat-primary)!important;
+}
+
 .mission-card.primary:hover .mission-title {
     border-left-width: 6px;
 }
@@ -416,6 +468,9 @@ canvas {
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
+    max-height: 400px!important;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 .mission-item {
     background: #0f111c;
@@ -944,4 +999,111 @@ footer:hover {
     0% { opacity: 1; transform: translateY(0); }
     70% { opacity: 1; }
     100% { opacity: 0; transform: translateY(-20px); visibility: hidden; }
+}
+
+.mission-card.warrior::before {
+    background: var(--warrior-primary);
+}
+
+.mission-card.warrior:hover {
+    box-shadow: 0 0 20px var(--warrior-glow);
+}
+
+.mission-card.warrior .mission-xp {
+    background: var(--warrior-soft);
+    color: var(--warrior-primary);
+}
+.mission-card.assassin::before {
+    background: var(--assassin-primary);
+}
+
+.mission-card.assassin:hover {
+    box-shadow: 0 0 20px var(--assassin-glow);
+}
+
+.mission-card.assassin .mission-xp {
+    background: var(--assassin-soft);
+    color: var(--assassin-primary);
+}
+
+.mission-card.sage::before {
+    background: var(--sage-primary);
+}
+
+.mission-card.sage:hover {
+    box-shadow: 0 0 20px var(--sage-glow);
+}
+
+.mission-card.sage .mission-xp {
+    background: var(--sage-soft);
+    color: var(--sage-primary);
+}
+
+.mission-card.diplomat::before {
+    background: var(--diplomat-primary);
+}
+
+.mission-card.diplomat:hover {
+    box-shadow: 0 0 20px var(--diplomat-glow);
+}
+
+.mission-card.diplomat .mission-xp {
+    background: var(--diplomat-soft);
+    color: var(--diplomat-primary);
+}
+
+.mission-card.adventurer::before {
+    background: var(--adventurer-primary);
+}
+
+.mission-card.adventurer:hover {
+    box-shadow: 0 0 20px var(--adventurer-glow);
+}
+
+.mission-card.adventurer .mission-xp {
+    background: var(--adventurer-soft);
+    color: var(--adventurer-primary);
+}
+
+.class-card.active-class-assassin {
+        border: 1.5px solid var(--assassin-primary);
+        box-shadow: 0 0 0 1px var(--assassin-soft), 0 20px 35px -10px black;
+        background: rgba(28, 36, 48, 0.96);
+}
+
+.class-card.active-class-assassin:hover {
+    box-shadow: 0 0 0 2px var(--assassin-primary), 0 28px 40px -12px black;
+}
+
+
+.class-card.active-class-adventurer {
+        border: 1.5px solid var(--adventurer-primary);
+        box-shadow: 0 0 0 1px var(--adventurer-soft), 0 20px 35px -10px black;
+        background: rgba(28, 36, 48, 0.96);
+}
+
+.class-card.active-class-adventurer:hover {
+    box-shadow: 0 0 0 2px var(--adventurer-primary), 0 28px 40px -12px black;
+}
+
+
+.class-card.active-class-sage {
+        border: 1.5px solid var(--sage-primary);
+        box-shadow: 0 0 0 1px var(--sage-soft), 0 20px 35px -10px black;
+        background: rgba(28, 36, 48, 0.96);
+}
+
+.class-card.active-class-sage:hover {
+    box-shadow: 0 0 0 2px var(--sage-primary), 0 28px 40px -12px black;
+}
+
+
+.class-card.active-class-warrior {
+        border: 1.5px solid var(--warrior-primary);
+        box-shadow: 0 0 0 1px var(--warrior-soft), 0 20px 35px -10px black;
+        background: rgba(28, 36, 48, 0.96);
+}
+
+.class-card.active-class-warrior:hover {
+    box-shadow: 0 0 0 2px var(--warrior-primary), 0 28px 40px -12px black;
 }

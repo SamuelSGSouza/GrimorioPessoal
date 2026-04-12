@@ -478,10 +478,6 @@
             <h1><i class="fas fa-chess-queen"></i> Vinculação de Classe</h1>
             <p>Escolha sua jornada, acompanhe o progresso de cada arquétipo e desperte lendas</p>
         </div>
-        <div class="active-class-badge" id="activeClassBadge">
-            <i class="fas fa-crown"></i>
-            <span>Classe ativa: <strong id="activeClassName">--</strong></span>
-        </div>
             <a class="btn-icon" id="btnDashboard" href="index.html"><i class="fas fa-skull-crosswalk"></i> Dashboard</a>
     </div>
 
@@ -700,7 +696,6 @@
         }
         await loadData(local_hero_id);
         renderAllClasses()
-        updateActiveClassBadge()
     }
 
     
@@ -721,7 +716,7 @@
 
             // construir card
             const card = document.createElement("div");
-            card.className = `class-card ${isActive ? 'active-class' : ''}`;
+            card.className = `class-card active-class active-class-${cls.id}`;
             card.dataset.classId = cls.id;
 
             // Header com nome e level tag
@@ -756,7 +751,7 @@
                     <span>${!is_max_level ? `→ ${nextLevelName}` : '🏆 Lenda'}</span>
                 </div>
                 <div class="xp-bar-bg">
-                    <div class="xp-fill" style="width: ${porcentagem}%;"></div>
+                    <div class="xp-fill-${cls.id} xp-fill " style="width: ${porcentagem}%;"></div>
                 </div>
                 <div class="xp-text">
                     <span><i class="fas fa-star-of-life"></i> ${xp} / ${next_level_xp} XP</span>
@@ -777,25 +772,7 @@
             // Botões de ação
             const actionsDiv = document.createElement("div");
             actionsDiv.className = "card-actions";
-            
-            const selectBtn = document.createElement("button");
-            selectBtn.className = `btn-class btn-select ${isActive ? 'active-select' : ''}`;
-            selectBtn.innerHTML = isActive ? '<i class="fas fa-check-circle"></i> Classe Ativa' : '<i class="fas fa-crown"></i> Selecionar como Ativa';
-            if (!isActive) {
-                selectBtn.addEventListener("click", (e) => {
-                    e.stopPropagation();
-                    currentActiveClass = cls.id;
-                    saveActiveClass(cls.id);
-                    classe_atual = cls.id
-                    saveData(hero_id)
-                    updateActiveClassBadge();
-                    renderAllClasses(); // re-render para destacar nova classe ativa
-                });
-            } else {
-                selectBtn.disabled = false;
-                selectBtn.style.opacity = "0.9";
-            }
-
+                    
             const addXp250 = document.createElement("button");
             addXp250.className = "btn-class btn-xp";
             addXp250.innerHTML = '<i class="fas fa-plus-circle"></i> +250 XP';
@@ -828,7 +805,6 @@
                 }
             });
 
-            actionsDiv.appendChild(selectBtn);
 
             card.appendChild(headerDiv);
             card.appendChild(focusDiv);
@@ -839,25 +815,8 @@
             grid.appendChild(card);
         }
 
-        updateActiveClassBadge();
     }
 
-    function updateActiveClassBadge() {
-        const badgeSpan = document.getElementById("activeClassName");
-        const activeClassObj = CLASSES_DATA.find(c => c.id === classe_atual);
-        if (badgeSpan && activeClassObj) {
-            badgeSpan.innerText = `${activeClassObj.nome} (${activeClassObj.niveis[getLevelAndTitle(getClassXP(activeClassObj.id, currentProgress), activeClassObj.niveis).levelNumber-1] || activeClassObj.niveis[0]})`;
-        } else if(badgeSpan) {
-            badgeSpan.innerText = "Guerreiro";
-        }
-        // atualizar ícone pequeno no badge
-        const badgeIcon = document.querySelector("#activeClassBadge i");
-        if (badgeIcon && activeClassObj) {
-            // troca a classe do ícone para refletir a classe ativa
-            const iconClasses = activeClassObj.icone.split(' ');
-            badgeIcon.className = `${iconClasses[0]} ${iconClasses[1] || 'fas fa-crown'}`;
-        }
-    }
 
     // Reset global de todos os progressos
     function globalReset() {

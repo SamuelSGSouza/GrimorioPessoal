@@ -12,20 +12,16 @@ const POSSIVEIS_MISSOES_DIARIAS = [
     { "id": "q4", "title": "🚶 Passos do Explorador", "desc": "Caminhe por 15 minutos ao ar livre", "xp": 50, "completed": false },
     { "id": "q5", "title": "📖 Sábio das Páginas", "desc": "Leia 10 páginas de um livro", "xp": 55, "completed": false },
     { "id": "q6", "title": "🏋️ Força do Guerreiro", "desc": "Faça 20 agachamentos", "xp": 30, "completed": false },
-    { "id": "q7", "title": "🦷 Escudo Branco", "desc": "Escove os dentes após cada refeição principal", "xp": 35, "completed": false },
     { "id": "q8", "title": "☀️ Banho de Luz", "desc": "Tome sol por 10 minutos (antes das 10h ou após 16h)", "xp": 40, "completed": false },
-    { "id": "q9", "title": "✍️ Pergaminho da Gratidão", "desc": "Escreva 1 coisa pela qual é grato hoje", "xp": 45, "completed": false },
     { "id": "q10", "title": "📚 Ordem do Escriba", "desc": "Organize sua mesa ou área de trabalho por 5 minutos", "xp": 35, "completed": false },
     { "id": "q11", "title": "🌬️ Sopro dos Ancestrais", "desc": "Respire fundo 5 vezes (inspire 4s, segure 4s, expire 4s)", "xp": 25, "completed": false },
-    { "id": "q12", "title": "🍎 Fruto da Terra", "desc": "Coma 1 porção de fruta ou verdura", "xp": 30, "completed": false },
     { "id": "q13", "title": "👀 Descanso do Vidente", "desc": "Faça uma pausa de 5 minutos longe das telas (olhe para o horizonte)", "xp": 40, "completed": false },
-    { "id": "q14", "title": "🤸 Libertação Cervical", "desc": "Faça alongamentos para pescoço e ombros", "xp": 35, "completed": false },
-    { "id": "q15", "title": "🌅 Cálice do Amanhecer", "desc": "Beba 1 copo de água logo ao acordar", "xp": 20, "completed": false },
     { "id": "q16", "title": "💪 Tábua de Resistência", "desc": "Segure a prancha por 1 minuto", "xp": 50, "completed": false },
-    { "id": "q17", "title": "🎯 Flecha do Propósito", "desc": "Anote a meta mais importante do dia", "xp": 35, "completed": false },
     { "id": "q18", "title": "👋 Saudação do Viajante", "desc": "Dê bom dia ou um elogio sincero a alguém", "xp": 40, "completed": false },
     { "id": "q19", "title": "🪜 Escada do Herói", "desc": "Suba escadas em vez de usar elevador (se possível)", "xp": 45, "completed": false },
-    { "id": "q20", "title": "📵 Proteção Noturna", "desc": "Desligue o celular 30 minutos antes de dormir", "xp": 60, "completed": false }
+    { "id": "q20", "title": "📵 Proteção Noturna", "desc": "Desligue o celular 30 minutos antes de dormir", "xp": 60, "completed": false },
+    { "id": "q21", "title": "🚫 Selo da Disciplina", "desc": "Rejeite conscientemente um hábito negativo hoje", "xp": 70, "completed": false },
+    { "id": "q22", "title": "🧍 Postura do Guardião", "desc": "Mantenha a postura correta por 2 minutos", "xp": 30, "completed": false },
 ]
 const DADOS_DE_CLASSES = [
         {
@@ -223,7 +219,7 @@ const DADOS_DE_CLASSES = [
             niveis: ["Curioso", "Explorador", "Ousado", "Aventureiro", "Destino"],
             foco: "Oportunidades, coragem, tentativa",
             bonus: "Mais oportunidades + Criatividade",
-            missoesExemplo: [
+            missoes: [
                 { "id": "adv1", "title": "🌅 Novo Caminho", "desc": "Volte do trabalho/escola por uma rota diferente", "xp": 30, "completed": false },
                 { "id": "adv2", "title": "🍲 Prato Inédito", "desc": "Experimente um alimento que nunca comeu", "xp": 35, "completed": false },
                 { "id": "adv3", "title": "🎵 Música Desconhecida", "desc": "Ouça uma música de um gênero que não costuma ouvir", "xp": 25, "completed": false },
@@ -529,9 +525,9 @@ function renderAllMissions() {
             openContainer.innerHTML = `<div class="empty-message"><i class="fas fa-hourglass-half"></i> Nenhuma missão ativa. Aceite novas aventuras!</div>`;
         } else {
             openContainer.innerHTML = missoes_aceitas.map(m => `
-                <div class="mission-item">
+                <div class="mission-item ">
                     <div class="mission-info">
-                        <div class="mission-title">⚔️ ${m.title}</div>
+                        <div class="mission-title mission-${m.item_id}">⚔️ ${m.title}</div>
                         <div class="mission-desc">${m.desc}</div>
                     </div>
                     <div class="mission-actions">
@@ -555,9 +551,9 @@ function renderAllMissions() {
             availableContainer.innerHTML = `<div class="empty-message"><i class="fas fa-scroll"></i> Nenhuma missão disponível no momento.</div>`;
         } else {
             availableContainer.innerHTML = missoes_dispo.map(m => `
-                <div class="mission-item">
+                <div class="mission-item mission-${m.id}">
                     <div class="mission-info">
-                        <div class="mission-title">📜 ${m.title}</div>
+                        <div class="mission-title mission-${m.item_id}">📜 ${m.title}</div>
                         <div class="mission-desc">${m.desc}</div>
                     </div>
                     <div class="mission-actions">
@@ -575,12 +571,22 @@ function renderAllMissions() {
 }
 
 function missoes_disponiveis(){
-    var missoes_permitidas = dados_classe_ativa.missoes
-    var corte = Math.ceil(levels_por_classe[classe_atual]["level"] / 2);
-    var missoes_disponiveis = missoes_permitidas.slice(corte, corte+5)
-    const missoes_filtradas = missoes_disponiveis.filter(
-        missao => !missoes_aceitas.some(a => a.id === missao.id)
-    );
+    var missoes_filtradas = DADOS_DE_CLASSES.flatMap(item => {
+        var missoes_permitidas = item.missoes
+        var classe_item = item.id
+        var corte = Math.ceil(levels_por_classe[classe_item]["level"] / 2);
+
+        var missoes_disponiveis = missoes_permitidas.slice(corte, corte+5)
+
+        return missoes_disponiveis
+            .filter(missao => !missoes_aceitas.some(a => a.id === missao.id))
+            .map(missao => ({
+                ...missao,
+                item_id: classe_item
+            }));
+    });
+
+    console.log(missoes_filtradas)
     return missoes_filtradas
 }
 
