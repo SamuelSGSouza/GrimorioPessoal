@@ -396,13 +396,7 @@ async function loadData(userId) {
 
     // 💾 fallback local
     if (!data) {
-        const local = localStorage.getItem("rpg_dashboard");
-        if (local) {
-            try {
-                data = JSON.parse(local);
-            } catch(e) {}
-        }
-        console.log("Pegando data local como fallback")
+        return
     }
 
     if (data) {
@@ -463,7 +457,7 @@ async function saveData(userId) {
     };
 
     // 💾 salva local primeiro (sempre)
-    localStorage.setItem("rpg_dashboard", JSON.stringify(saveData));
+    localStorage.setItem("hero_id", hero_id);
 
     // ☁️ salva na nuvem
     if (userId) {

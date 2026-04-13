@@ -869,6 +869,9 @@ footer:hover {
 #tokenModal{
     display: none;
 }
+#loadModal{
+    display: none;
+}
 
 
 /* Área do Token */

@@ -144,6 +144,39 @@
 
     </div>
 </div>
+
+<!-- MODAL -->
+<div id="loadModal" class="modal-overlay">
+    
+    <div class="modal-box">
+        
+        <div class="modal-header">
+            <h2> Dados de Leitura</h2>
+
+            <div id="dadosEncontradosArea">
+                <p>
+                    Confira as informações abaixo e verifique se são da sua conta:
+                </p>
+                <p>Nome: <span id="nomeEncontrado"></span></p>
+                <p>Nível: <span id="nivelEncontrado"></span></p>
+            </div>
+            <div id="dadosNaoEncontradosArea">
+                <p>
+                    Nenhum dado foi encontrado para o token selecionado. Isso significa que todos os dados desse token serão zerados.
+                </p>
+            </div>
+            
+        </div>
+
+
+
+        <div class="modal-actions">
+            <button id="btnFecharLoad" class="btn-secondary">Cancelar</button>
+            <button id="btnConfirmarLoad" class="btn-primary">Confirmar</button>
+        </div>
+
+    </div>
+</div>
 <script>
 
 </script>

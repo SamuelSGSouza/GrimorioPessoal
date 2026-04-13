@@ -1,4 +1,32 @@
+function exibeDadosColetados(){
+    const encontrados = document.getElementById("dadosEncontradosArea")
+    encontrados.style.display = "none";
+    const nao_encontrados = document.getElementById("dadosNaoEncontradosArea")
+    nao_encontrados.style.display = "none";
+    if (hero_name || hero_level){
+        encontrados.style.display = "block";
+    } else {
+        nao_encontrados.style.display = "flex";
+    }
+    
+    const modalLoad = document.getElementById("loadModal");
+    // Abre automaticamente
+    modalLoad.style.display = "flex";
 
+    document.getElementById("btnFecharLoad").addEventListener("click", () => {
+        modalLoad.style.display = "none";
+        window.location.href = "index.html"
+    })
+    document.getElementById("btnConfirmarLoad").addEventListener("click", () => {
+        saveData(hero_id)
+        setTimeout(() => {
+            window.location.href = "index.html"
+        })
+    })
+
+    document.getElementById("nomeEncontrado").textContent = hero_name
+    document.getElementById("nivelEncontrado").textContent = hero_level
+}
 
 function geraToken(uuid, mode=1){
     if (uuid == undefined){
@@ -22,8 +50,7 @@ function geraToken(uuid, mode=1){
             fecharModal();
             
             setTimeout(() => {
-                saveData(hero_id)
-                window.location.href = "index.html"
+                exibeDadosColetados()
             }, 1000);
             
             
@@ -448,11 +475,9 @@ function bindRadarEvents() {
 async function onPageLoad() {
     // Sincroniza classe baseada no nível inicial
     try {
-        var local_hero_id = JSON.parse(localStorage.getItem("rpg_dashboard")).hero.id;
-
+        var local_hero_id = localStorage.getItem("hero_id", hero_id);
     } catch {
         var local_hero_id = undefined;
-
     }
     await loadData(local_hero_id)
     document.getElementById("playerNameDisplay").textContent = hero_name;
