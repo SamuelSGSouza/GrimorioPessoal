@@ -396,6 +396,8 @@ async function loadData(userId) {
 
     // 💾 fallback local
     if (!data) {
+        hero_name = undefined;
+        hero_level = undefined
         return
     }
 
