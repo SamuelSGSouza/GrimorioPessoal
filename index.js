@@ -81,11 +81,13 @@ function resolver_missao(event) {
     const id = event.currentTarget.dataset.id;
     const missao = missoes_aceitas.find(m => m.id === id);
     var xp_adicional = 0;
-
+    var classe = undefined
     if (missao) {
 
         xp_adicional = missao.xp;
         missao.completed = true;
+
+        classe = missoes_aceitas.find(m => m.id === id).item_id
 
         // 🔥 REMOVE A MISSÃO DA LISTA
         missoes_aceitas = missoes_aceitas.filter(m => m.id !== id);
@@ -96,7 +98,7 @@ function resolver_missao(event) {
 
     hero_xp = hero_xp + xp_adicional;
 
-    updateXP(xp_adicional);
+    updateXP(xp_adicional, classe);
     saveData(hero_id);
     renderAllMissions();
 }
@@ -117,7 +119,7 @@ function aceitar_missao(event){
 
 
 
-function updateXP(xp_adicional){
+function updateXP(xp_adicional, classe = undefined){
     hero_xp_proximo_nivel = 50*hero_level*1.7 + 50;
     if (hero_xp >= hero_xp_proximo_nivel){
         hero_xp = hero_xp - hero_xp_proximo_nivel;
@@ -163,16 +165,19 @@ function updateXP(xp_adicional){
     
 
     //TRATANDO CLASSE
-    if  (xp_adicional == undefined){
-        xp_adicional = 0
+    if (classe !== undefined){
+        if  (xp_adicional == undefined){
+            xp_adicional = 0
+        }
+        levels_por_classe[classe]["xp"] = levels_por_classe[classe]["xp"] + xp_adicional
+        let nextXpClasse = 50*levels_por_classe[classe]["level"]*1.7 + 50;
+        if (levels_por_classe[classe]["xp"] >= nextXpClasse){
+            levels_por_classe[classe]["xp"] = levels_por_classe[classe]["xp"] - nextXpClasse;
+            levels_por_classe[classe]["level"] = levels_por_classe[classe]["level"] + 1
+        }
+        nextXpClasse = 50*levels_por_classe[classe]["level"]*1.7 + 50;
     }
-    levels_por_classe[classe_atual]["xp"] = levels_por_classe[classe_atual]["xp"] + xp_adicional
-    let nextXpClasse = 50*levels_por_classe[classe_atual]["level"]*1.7 + 50;
-    if (levels_por_classe[classe_atual]["xp"] >= nextXpClasse){
-        levels_por_classe[classe_atual]["xp"] = levels_por_classe[classe_atual]["xp"] - nextXpClasse;
-        levels_por_classe[classe_atual]["level"] = levels_por_classe[classe_atual]["level"] + 1
-    }
-    nextXpClasse = 50*levels_por_classe[classe_atual]["level"]*1.7 + 50;
+    
 
 
 
